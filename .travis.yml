@@ -3,7 +3,6 @@ notifications:
 language: scala
 scala:
   - 2.9.2
-  - 2.10.0
 env:
   SBT_OPTS=-XX:ReservedCodeCacheSize=1024m
-script: "./sbt ++$TRAVIS_SCALA_VERSION test"
+script: "./sbt +compile"
