@@ -106,12 +106,13 @@ object Finagle extends Build {
     settings = Project.defaultSettings ++
       sharedSettings ++
       Unidoc.settings ++ Seq(
-        Unidoc.unidocExclude := Seq(finagleExample.id)
-      )
+        Unidoc.unidocExclude := Seq(finagleExample.id)) ++
+      BuildSync.settings ++ Seq(
+        BuildSync.buildSyncExclude := Set("finagle-spdy"))
   ) aggregate(
     // Core, support.
     finagleCore, finagleTest, finagleOstrich4, finagleStats,
-    finagleZipkin, finagleServersets,
+    finagleZipkin, finagleServersets, finagleMdns,
     finagleException, finagleCommonsStats,
 
     // Protocols
@@ -231,6 +232,17 @@ object Finagle extends Build {
           <exclude org="javax.mail" name="mail"/>
         </dependency>
       </dependencies>
+  ).dependsOn(finagleCore)
+
+  lazy val finagleMdns = Project(
+    id = "finagle-mdns",
+    base = file("finagle-mdns"),
+    settings = Project.defaultSettings ++
+      sharedSettings
+  ).settings(
+    name := "finagle-mdns",
+    libraryDependencies ++= Seq(
+      "javax.jmdns" % "jmdns" % "3.4.1")
   ).dependsOn(finagleCore)
 
   // Protocol support

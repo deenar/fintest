@@ -5,4 +5,4 @@ scala:
   - 2.9.2
 env:
   SBT_OPTS=-XX:ReservedCodeCacheSize=1024m
-script: "./sbt +test"
+script: "./sbt build-sync-check test"
